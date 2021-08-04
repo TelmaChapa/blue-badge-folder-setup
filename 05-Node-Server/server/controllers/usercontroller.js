@@ -1,16 +1,34 @@
-// const router = require('express').Router();
-// const User = require('../db').import('../models/user');
+const router = require('express').Router();
+const User = require('../db').import('../models/user');
 
-//router.post('/create', function (req, res) {
+router.post('/create', function (req, res) {
 
-//   User.create({
-//       email: "user@email.com",
-//password: "password1234"
-//   })
-//       .then(
-//          res.send("This is our user/create endpoint!")
-//      );
+    User.create({
+        email: req.body.user.email,
+        password: req.body.user.password
+    })
+        .then(
+            function createSuccess(user) {
+                res.json({
+                    user: user
+                });
+            }
+        )
+        .catch(err => res.status(500).json({ error: err }))
+});
 
+router.post('/login', function (req, res) {
+    User.findOne({
+        where: {
+            email: req.body.user.email
+        }
+    })
+        .then(function loginSuccess(user) {
+            res.status(200).json({
+                user: user
+            })
+        })
+        .catch(err => res.status(500).json({ error: err }))
+});
 
-
-// module.exports = router;
+module.exports = router;

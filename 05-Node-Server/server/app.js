@@ -1,11 +1,12 @@
 //require("dotenv").config();
 let express = require('express');
 let app = express();
-// let sequelize = require('./db');
-let journal = require('./controllers/journalcontroller');
-//let user = require('./controllers/usercontroller');
+let sequelize = require('./db');
 
-//sequelize.sync();
+let journal = require('./controllers/journalcontroller');
+let user = require('./controllers/usercontroller');
+
+sequelize.sync();
 //sequelize.sync({force:true})
 
 // app.use('/test', function (req, res) {
@@ -18,10 +19,11 @@ let journal = require('./controllers/journalcontroller');
 
 //Have endpoint of journal/practice
 // send a response for that endpoint (This is a practice route)
-//app.use(express.json());
+
+app.use(express.json());
 
 app.use('/journal', journal);
-//app.use('/user', user);
+app.use('/user', user);
 
 //app.use('/about', require('./controllers/journalcontroller')); this line gets grabbed and added to line 3 above, erasing it from here, as of right now "commented out". Min 7:10 Video 4.2 module
 
