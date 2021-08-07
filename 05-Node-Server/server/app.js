@@ -1,4 +1,4 @@
-//require("dotenv").config();
+require("dotenv").config();
 let express = require('express');
 let app = express();
 let sequelize = require('./db');
@@ -23,6 +23,8 @@ sequelize.sync();
 app.use(express.json());
 
 app.use('/journal', journal);
+
+/*Exposed route*/
 app.use('/user', user);
 
 //app.use('/about', require('./controllers/journalcontroller')); this line gets grabbed and added to line 3 above, erasing it from here, as of right now "commented out". Min 7:10 Video 4.2 module
