@@ -20,6 +20,7 @@ sequelize.sync();
 //Have endpoint of journal/practice
 // send a response for that endpoint (This is a practice route)
 
+app.use(require('./middleware/headers'));
 app.use(express.json());
 
 app.use('/journal', journal);

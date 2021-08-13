@@ -1,7 +1,7 @@
 {
   "name": "node-modules-server",
   "version": "1.0.0",
-  "description": "Journal",
+  "description": "Log",
   "main": "app.js",
   "type":"commonjs",
   "scripts": {
