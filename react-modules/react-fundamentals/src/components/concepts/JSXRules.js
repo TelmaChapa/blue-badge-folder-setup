@@ -23,6 +23,7 @@ const JSXRules = () => {
     );
 };
 export default JSXRules;
+
 const NormalComponent = () => {
     return (
         <div style={{ border: "2px solid black" }}>
