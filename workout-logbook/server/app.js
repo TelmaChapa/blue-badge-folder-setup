@@ -1,6 +1,8 @@
+require("dotenv").config();
 let express = require('express');
 let app = express();
 let sequelize = require('./db');
+
 
 let logbook = require('./controllers/logbookcontroller');
 let user = require('./controllers/usercontroller');
@@ -8,9 +10,10 @@ let user = require('./controllers/usercontroller');
 sequelize.sync();
 
 app.use(express.json());
+app.use(require('./middleware/headers'));
 
 app.use('/user', user);
-app.use('/logbook', logbook)
+app.use('/log', logbook);
 
 
 app.listen(3000, function () {

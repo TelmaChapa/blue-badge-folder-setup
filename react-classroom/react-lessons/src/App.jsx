@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import Parent from './components/Practice/Parent';
 // import Header from "./components/Day1/Header";
 // import AboutMe from "./components/Day1/AboutMe";
 // import Footer from "./components/Day1/Footer";
@@ -9,11 +10,11 @@ function App() {
   // const age = 300;
   // const rich = "true";
   // const date = new Date().getFullYear();
-  
+  let summerActivity="swimming"
   return (
     <div className="App">
       
-      
+    <Parent summerActivity={summerActivity}/>  
 
     </div>
   );

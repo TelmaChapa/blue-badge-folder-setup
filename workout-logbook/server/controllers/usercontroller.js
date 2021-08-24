@@ -1,17 +1,16 @@
-require('dotenv').config();
+// require('dotenv').config();
 const router = require('express').Router();
 const User = require('../db').import('../models/user');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
-router.post('/create', function (req, res) {
-
+router.post('/register', function (req, res) {
     User.create({
         username: req.body.user.username,
-        passwordhash: req.body.user.passwordhash
+        passwordHash: bcrypt.hashSync(req.body.user.password, 13)
     })
-        .then(
-            function createSuccess(user) {
-                let token = jwt.sign({ id: user.id, username: user.username }, "i_am_secret", { expiresIn: 60 * 60 * 24 });
+        .then(function createSuccess(user) {
+            let token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 });
 
                 res.json({
                     user: user,
@@ -19,8 +18,7 @@ router.post('/create', function (req, res) {
                     sessionToken: token
                 });
             }
-        )
-        .catch(err => res.status(500).json({ error: err }))
+    ).catch((err) => res.status(500).json({ error: err }))
 });
 
 router.post('/login', function (req, res) {
@@ -31,18 +29,26 @@ router.post('/login', function (req, res) {
     })
         .then(function loginSuccess(user) {
             if (user) {
-                let token = jwt.sign({ id: user.id, username: user.username }, "i_am_secret", { expiresIn: 60 * 60 * 24 });
-                res.status(200).json({
-                    user: user,
-                    message: 'User successfully logged in!',
-                    sessionToken: token
-                })
+                bcrypt.compare(req.body.user.password, user.passwordHash, function (err, matches) {
+                    if (matches) {
+
+                        let token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 })
+
+                        res.status(200).json({
+                            user: user,
+                            message: "User successfully logged in!",
+                            sessionToken: token
+                        })
+
+                    } else {
+                        res.status(502).json({ error: "Login Failed" });
+                    }
+                });
             } else {
-                res.status(500).json({ error: 'User does not exist.' })
+                res.status(500).json({ error: "User does not exist." })
             }
         })
         .catch(err => res.status(500).json({ error: err }))
 });
-
 
 module.exports = router;
