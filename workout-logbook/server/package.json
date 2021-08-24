@@ -1,7 +1,7 @@
 {
-  "name": "node-modules-server",
+  "name": "workout-logbook-server",
   "version": "1.0.0",
-  "description": "Journal",
+  "description": "Log",
   "main": "app.js",
   "type":"commonjs",
   "scripts": {
@@ -9,7 +9,7 @@
     "start": "node app.js",
     "dev": "nodemon"
   },
-  "author": "YOUR NAME HERE",
+  "author": "Telma Chapa",
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^1.19.4"

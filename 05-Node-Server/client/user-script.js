@@ -2,44 +2,67 @@
 *** USER SIGNUP ***
 ****************** */
 function userSignUp() {
-    console.log('userSignUp Function Called')
-    /* *******ADD FOUR LINES BELOW */
+    console.log("userSignUp Function Called");
     let userEmail = document.getElementById("emailSignup").value;
-    let userPass = document.getElementById('pwdSignUp').value;
+    let userPass = document.getElementById("pwdSignup").value;
     let newUserData = { user: { email: userEmail, password: userPass } };
-    console.log('NEWUSERDATA ==> ${newUserData.user.email}  ${newUserData.user.password}')
-    console.log(userEmail);
-    fetch('http://localhost:3000/user/create', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newUserData)
-
-    })
-        .then(response => response.json())
-        .then(function (response) {
-            console.log(response.sessionToken);
-            let token = response.sessionToken;
-            localStorage.setItem('SessionToken', token);
-            tokenChecker()
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify(newUserData);
+    var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+    };
+    fetch("http://localhost:3000/user/create", requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+            let token = result.sessionToken;
+            localStorage.setItem("SessionToken", token);
+            tokenChecker();
+            console.log(result);
         })
-        .catch((err) => {
-            console.log(err)
-        })
+        .catch((error) => console.log("error", error));
 }
+
 /* *********************
 *** USER LOGIN ***
 ********************* */
 function userLogin() {
-    console.log('userLogin Function Called')
+    console.log("userLogin Function Called");
+    let userEmail = document.getElementById("emailLogin").value;
+    let userPass = document.getElementById("pwdLogin").value;
+    let newUserData = { user: { email: userEmail, password: userPass } };
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify(newUserData);
+    var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+    };
+    fetch("http://localhost:3000/user/login", requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+            let token = result.sessionToken;
+            localStorage.setItem("SessionToken", token);
+            tokenChecker();
+            console.log(result);
+        })
+        .catch((error) => console.log("error", error));
 }
+
 
 /* *********************
 *** USER LOGOUT ***
 ********************  */
 function userLogout() {
     console.log('userLogout Function Called')
+    localStorage.setItem('sessionToken', undefined)
+    console.log(`sessionToken ===> ${localStorage.sessionToken}`)
+    tokenChecker()
 }
 
 /* ***************************
